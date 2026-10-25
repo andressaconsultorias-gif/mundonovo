@@ -19,6 +19,13 @@ const RELEVANTE = /caf[ée]|cafeic|cafeeir|conilon|robusta|ar[áa]bica|EUDR|Cec[
 const RUIDO = /calorias|futebol|carrinho|empreendedor come[çc]a|novela|famos|caf[ée] da manh[ãa]|cafeteria|barista|receita|bolo|caf[ée] com leite|cafezinho|xícara|torrefação artesanal|"oscar"|caf[ée] da tarde|happy hour|horóscopo/i;
 // …e precisa ter um termo de mercado, produção ou certificação (evita matérias de saúde, gastronomia, celebridades).
 const NEGOCIO = /pre[çc]o|cota[çc][ãa]o|bolsa|saca|mercado|safra|colheita|florada|export|import|embarque|produ[çc][ãa]o|produtor|cafeicult|lavoura|ar[áa]bica|conilon|robusta|Cec[aá]f[ée]|Conab|EUDR|certifica|sustent|rastreab|regenerativ|desmatamento|Nova York|Londres|B3|fundos|estoque|oferta|demanda|tarifa|clima|chuva|geada|seca|El Ni[ñn]o|cooperativa|Cooxup|Expocaccer|Rainforest|OIC|Vietn|Col[ôo]mbia|Abic|consumo de caf/i;
+// Termos obrigatórios por tema, para a manchete realmente ser daquele assunto.
+const EXIGE: Record<string, RegExp> = {
+  sustentabilidade: /EUDR|certific|sustent|rastreab|regenerativ|desmat|Rainforest|ambient|carbono|\b4C\b|org[âa]nic|ESG|socioambient|clim[áa]tic/i,
+  internacional: /Vietn|Col[ôo]mbia|Eti[óo]pia|Honduras|Indon[ée]sia|Uganda|Peru|OIC|Europ|Estados Unidos|EUA|China|Jap[ãa]o|Alemanha|tarifa|internacion|Londres|global|mundial/i,
+  exportacao: /export|import|embarque|Cec[aá]f[ée]|consumo|demanda|Abic|vendas|compradores|ind[úu]stria/i,
+  safra: /safra|florada|colheita|lavoura|cafeicult|produtor|produ[çc][ãa]o|clima|chuva|geada|seca|El Ni[ñn]o|Conab|Embrapa|plantio/i,
+};
 export const relevante = (titulo: string) => RELEVANTE.test(titulo) && NEGOCIO.test(titulo) && !RUIDO.test(titulo);
 
 export type Noticia = { titulo: string; veiculo: string | null; url: string; data: string | null; tema: string };
@@ -64,7 +71,7 @@ export async function coletarNoticias() {
     const id = TEMAS[i].id;
     if (r.status !== "fulfilled") { erros.push(id); return; }
     porTema[id] = r.value
-      .filter((n) => (!n.data || Date.parse(n.data) >= limite) && relevante(n.titulo))
+      .filter((n) => (!n.data || Date.parse(n.data) >= limite) && relevante(n.titulo) && (!EXIGE[id] || EXIGE[id].test(n.titulo)))
       .sort((a, b) => (b.data ?? "").localeCompare(a.data ?? ""))
       .filter((n) => { const k = chave(n.titulo); if (vistos.has(k)) return false; vistos.add(k); return true; })
       .slice(0, 12);
@@ -80,7 +87,7 @@ export async function coletarNoticias() {
   if (!Object.values(porTema).some((l) => l?.length) && anterior?.temas?.some((t: any) => t.itens.length)) return anterior;
 
   const dados = {
-    versao: 3,
+    versao: 4,
     atualizadoEm: new Date().toISOString(),
     temas: TEMAS.map((t) => ({ id: t.id, nome: t.nome, itens: porTema[t.id] ?? [] })),
     falhas: erros,
@@ -93,6 +100,6 @@ export async function coletarNoticias() {
 export async function lerNoticias() {
   const store = getStore({ name: "mercado", consistency: "strong" });
   const n: any = await store.get("noticias", { type: "json" });
-  if (n && n.versao === 3 && Date.now() - Date.parse(n.atualizadoEm) < 30 * 3600e3) return n;
+  if (n && n.versao === 4 && Date.now() - Date.parse(n.atualizadoEm) < 30 * 3600e3) return n;
   try { return await coletarNoticias(); } catch { return n ?? null; }
 }
