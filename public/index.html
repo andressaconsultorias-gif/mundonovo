@@ -178,8 +178,7 @@ tr:last-child td{border-bottom:0}
 .cv-veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(2,26,32,.55) 0%,rgba(2,26,32,0) 30%,rgba(2,26,32,0) 62%,rgba(2,26,32,.75) 100%);pointer-events:none}
 .cv-inner{min-height:100vh;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto auto;padding:clamp(16px,2.4vw,44px) max(clamp(16px,3vw,56px),env(safe-area-inset-left)) clamp(14px,1.6vw,28px)}
 .cv-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-.cv-brand .wordmark{font-size:clamp(18px,1.6vw,30px)}
-.cv-brand .tagline{font-size:clamp(10px,.75vw,13px)}
+.cv-logo{display:block;height:clamp(64px,7.5vw,150px);width:auto}
 .cv-clock{text-align:center;font-family:var(--f-display);line-height:1}
 .cv-time{font-weight:800;font-size:clamp(22px,2.6vw,48px);letter-spacing:.02em}
 .cv-date{font-size:clamp(10px,.8vw,14px);letter-spacing:.14em;text-transform:uppercase;color:#9DB8BE;margin-top:6px;font-weight:700}
@@ -227,9 +226,9 @@ tr:last-child td{border-bottom:0}
 /* Barra fixa abaixo da capa */
 header.top{position:sticky;top:0;z-index:20;background:var(--petroleo);box-shadow:0 1px 0 rgba(255,255,255,.06),0 6px 18px rgba(0,0,0,.12)}
 header.top::after{display:none}
-.top .wrap.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:0;padding-bottom:0}
-.bar-brand{font-family:var(--f-display);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#C9D6D8;white-space:nowrap}
-.bar-brand b{color:#fff;font-weight:900}
+.top .wrap.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:0;padding-bottom:0}
+.bar-brand{display:block;padding:6px 0;line-height:0}
+.bar-brand img{height:42px;width:auto}
 .top .maintabs{margin-top:0;border-bottom:0}
 
 @media (max-width:900px){
@@ -241,7 +240,7 @@ header.top::after{display:none}
   .cv-top .status{width:100%}
   #btn-full{display:none}
   .t-val{font-size:clamp(22px,7vw,30px)}
-  .bar-brand{display:none}
+  .bar-brand img{height:34px}
 }
 
 /* Abas principais */
@@ -309,8 +308,7 @@ footer b{color:var(--fg)}
   <div class="cv-inner">
     <div class="cv-top">
       <div class="cv-brand">
-        <div class="wordmark">MUNDO NOVO CAFÉ</div>
-        <div class="tagline">CAFÉ <b>+</b> MERCADO E SUSTENTABILIDADE</div>
+        <img class="cv-logo" src="/img/logo-mundonovo-clara.png" alt="Mundo Novo — Café, Mercado e Sustentabilidade" width="720" height="465">
       </div>
       <div class="cv-clock">
         <div class="cv-time" id="cv-time">--:--</div>
@@ -369,8 +367,8 @@ footer b{color:var(--fg)}
 </section>
 
 <header class="top" id="painel">
-  <div class="wrap bar">
-    <div class="bar-brand"><b>MUNDO NOVO</b> · Mercado do café</div>
+  <div class="wrap topbar">
+    <a class="bar-brand" href="#" id="bar-logo" aria-label="Voltar à capa"><img src="/img/logo-mundonovo-clara.png" alt="Mundo Novo — Café, Mercado e Sustentabilidade" width="720" height="465"></a>
     <nav class="maintabs" role="tablist" aria-label="Seções do painel">
       <button type="button" role="tab" id="tab-mercado" aria-controls="pg-mercado" aria-selected="true">Mercado</button>
       <button type="button" role="tab" id="tab-noticias" aria-controls="pg-noticias" aria-selected="false">Notícias<span class="n" id="n-count" hidden></span></button>
@@ -1052,6 +1050,7 @@ footer b{color:var(--fg)}
     if (not) { if (!N) carregarNoticias(); } else if (D) desenharGraficos();
     window.scrollTo({ top: 0 });
   }
+  $("bar-logo").onclick = (e) => { e.preventDefault(); if ($("cover").hidden) abrirAba("mercado"); window.scrollTo({ top: 0, behavior: "smooth" }); };
   $("cv-down").onclick = (e) => { e.preventDefault(); $("painel").scrollIntoView({ behavior: "smooth" }); };
   document.getElementById("lk-noticias")?.addEventListener("click", (e) => { e.preventDefault(); abrirAba("noticias"); });
   $("tab-mercado").onclick = () => abrirAba("mercado");
