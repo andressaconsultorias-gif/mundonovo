@@ -159,7 +159,7 @@ export function parseCotacoes(html: string) {
   };
 
   const conilonES = rows(sCon)
-    .filter((r) => num(r[1]) && !/\*\*\*/.test(r[1]))
+    .filter((r) => num(r[1]) && !/\*\*\*/.test(r[1]) && !/[A-Za-z]/.test(r[1]))
     .map((r) => ({ tipo: r[0], preco: num(r[1])!, var: num(r[2]) }));
 
   // Manchetes de café (título + link)
@@ -177,7 +177,13 @@ export function parseCotacoes(html: string) {
     noticias.push({ titulo, url, data: d ? d[1] : null });
   }
 
+  // Dólar do cabeçalho do site ("Dólar USD R$ 4,99 -0,90%"), usado quando a API de câmbio falha
+  const txt = clean(html.slice(0, 200000));
+  const md = txt.match(/D[óo]lar\s*USD\s*R\$\s*([\d.,]+)\s*([+-]?[\d.,]+)\s*%/i);
+  const dolarSite = md ? { valor: num(md[1]), var: num(md[2]) } : null;
+
   return {
+    dolarSite,
     cepeaArabica: indicador(sArab),
     cepeaRobusta: indicador(sRob),
     ny: { contratos: contratos(sNY, true), dolar: dolarNA, data: atualizado(sNY) },

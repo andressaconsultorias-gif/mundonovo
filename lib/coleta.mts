@@ -31,7 +31,11 @@ async function fonteDolar() {
 async function fonteBCB() {
   const sgs = (cod: number, n: number) =>
     getJSON(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${cod}/dados/ultimos/${n}?formato=json`);
-  const [ptax, selic, ipca] = await Promise.allSettled([sgs(1, 60), sgs(432, 1), sgs(13522, 1)]);
+  const dd = (d: Date) => d.toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
+  const hoje = new Date();
+  const serieDatas = (cod: number, dias: number) =>
+    getJSON(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${cod}/dados?formato=json&dataInicial=${dd(new Date(+hoje - dias * 864e5))}&dataFinal=${dd(hoje)}`);
+  const [ptax, selic, ipca] = await Promise.allSettled([serieDatas(1, 120), sgs(432, 1), sgs(13522, 1)]);
   const br = (d: string) => d.split("/").reverse().join("-");
   return {
     ptax: ptax.status === "fulfilled" ? ptax.value.map((x: any) => ({ data: br(x.data), valor: parseFloat(x.valor) })) : [],
@@ -141,6 +145,18 @@ export async function coletar() {
       atual.fontes[n] = { ok: false, em: anterior.fontes?.[n]?.em ?? null, erro: String(r.reason?.message ?? r.reason).slice(0, 160) };
     }
   });
+
+  // Dólar: se a API de câmbio falhar, usa o valor do cabeçalho do Notícias Agrícolas (ou a última PTAX)
+  if (!atual.fontes.dolar.ok || !atual.dolar?.usd?.valor) {
+    const ds = atual.cotacoes?.dolarSite;
+    const pt = atual.bcb?.ptax?.at?.(-1);
+    if (ds?.valor) {
+      atual.dolar = { usd: { valor: ds.valor, var: ds.var, hora: null, origem: "Notícias Agrícolas" }, eur: anterior.dolar?.eur ?? null };
+      atual.fontes.dolar = { ok: true, em: agora, origem: "alternativa" };
+    } else if (pt?.valor && !atual.dolar?.usd?.valor) {
+      atual.dolar = { usd: { valor: pt.valor, var: null, hora: null, origem: "PTAX" }, eur: null };
+    }
+  }
 
   // Semente de histórico (10 pregões de cada página)
   if (precisaSemente && res[5]?.status === "fulfilled") {
