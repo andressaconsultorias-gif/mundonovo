@@ -16,8 +16,10 @@ export const TEMAS = [
 
 // A manchete precisa falar de café como mercado/cultura; descarta assuntos de consumo e gastronomia.
 const RELEVANTE = /caf[ée]|cafeic|cafeeir|conilon|robusta|ar[áa]bica|EUDR|Cec[aá]f[ée]/i;
-const RUIDO = /caf[ée] da manh[ãa]|cafeteria|barista|receita|bolo|caf[ée] com leite|cafezinho|xícara|torrefação artesanal|"oscar"|caf[ée] da tarde|happy hour|horóscopo/i;
-export const relevante = (titulo: string) => RELEVANTE.test(titulo) && !RUIDO.test(titulo);
+const RUIDO = /calorias|futebol|carrinho|empreendedor come[çc]a|novela|famos|caf[ée] da manh[ãa]|cafeteria|barista|receita|bolo|caf[ée] com leite|cafezinho|xícara|torrefação artesanal|"oscar"|caf[ée] da tarde|happy hour|horóscopo/i;
+// …e precisa ter um termo de mercado, produção ou certificação (evita matérias de saúde, gastronomia, celebridades).
+const NEGOCIO = /pre[çc]o|cota[çc][ãa]o|bolsa|saca|mercado|safra|colheita|florada|export|import|embarque|produ[çc][ãa]o|produtor|cafeicult|lavoura|ar[áa]bica|conilon|robusta|Cec[aá]f[ée]|Conab|EUDR|certifica|sustent|rastreab|regenerativ|desmatamento|Nova York|Londres|B3|fundos|estoque|oferta|demanda|tarifa|clima|chuva|geada|seca|El Ni[ñn]o|cooperativa|Cooxup|Expocaccer|Rainforest|OIC|Vietn|Col[ôo]mbia|Abic|consumo de caf/i;
+export const relevante = (titulo: string) => RELEVANTE.test(titulo) && NEGOCIO.test(titulo) && !RUIDO.test(titulo);
 
 export type Noticia = { titulo: string; veiculo: string | null; url: string; data: string | null; tema: string };
 
@@ -78,7 +80,7 @@ export async function coletarNoticias() {
   if (!Object.values(porTema).some((l) => l?.length) && anterior?.temas?.some((t: any) => t.itens.length)) return anterior;
 
   const dados = {
-    versao: 2,
+    versao: 3,
     atualizadoEm: new Date().toISOString(),
     temas: TEMAS.map((t) => ({ id: t.id, nome: t.nome, itens: porTema[t.id] ?? [] })),
     falhas: erros,
@@ -91,6 +93,6 @@ export async function coletarNoticias() {
 export async function lerNoticias() {
   const store = getStore({ name: "mercado", consistency: "strong" });
   const n: any = await store.get("noticias", { type: "json" });
-  if (n && n.versao === 2 && Date.now() - Date.parse(n.atualizadoEm) < 30 * 3600e3) return n;
+  if (n && n.versao === 3 && Date.now() - Date.parse(n.atualizadoEm) < 30 * 3600e3) return n;
   try { return await coletarNoticias(); } catch { return n ?? null; }
 }
