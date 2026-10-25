@@ -2,6 +2,8 @@ import { getStore } from "@netlify/blobs";
 import { parseCotacoes, parseHistorico } from "./parse.mts";
 
 const NA = "https://www.noticiasagricolas.com.br/cotacoes/cafe";
+// Aumentar quando mudar o formato dos dados: força uma nova coleta no próximo acesso.
+const VERSAO = 2;
 const UA = "Mozilla/5.0 (compatible; MundoNovoPainel/1.0; painel interno de mercado)";
 
 async function getText(url: string, ms = 9000) {
@@ -134,7 +136,7 @@ export async function coletar() {
   const res = await Promise.allSettled(fontes);
 
   const agora = new Date().toISOString();
-  const atual: any = { geradoEm: agora, fontes: {} };
+  const atual: any = { geradoEm: agora, versao: VERSAO, fontes: {} };
   nomes.forEach((n, i) => {
     const r = res[i];
     if (r.status === "fulfilled") {
@@ -191,7 +193,7 @@ export async function coletar() {
 export async function lerOuColetar(maxIdadeMin = 20) {
   const store = getStore({ name: "mercado", consistency: "strong" });
   const atual: any = await store.get("atual", { type: "json" });
-  if (atual && Date.now() - Date.parse(atual.geradoEm) < maxIdadeMin * 60e3) return atual;
+  if (atual && atual.versao === VERSAO && Date.now() - Date.parse(atual.geradoEm) < maxIdadeMin * 60e3) return atual;
   try {
     return await coletar();
   } catch (e) {
