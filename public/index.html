@@ -884,7 +884,7 @@ footer b{color:var(--fg)}
       $("k-pat-d").textContent = dBR(c.fisico?.data);
       $("k-pat-s").textContent = x.arab ? `${pat.preco >= x.arab ? "+" : "−"}${brl(Math.abs(pat.preco - x.arab), 0)} vs CEPEA` : "Expocaccer";
     }
-    spark("sp-ny", serie("nyCents")); spark("sp-usd", serie("ptax")); spark("sp-rob", serie("robusta")); spark("sp-pat", serie("patrocinio").length > 1 ? serie("patrocinio") : serie("arabica"));
+    spark("sp-ny", serie("nyCents")); spark("sp-usd", serie("ptax")); spark("sp-rob", serie("robusta")); spark("sp-pat", serie("patrocinio"));
     ticker();
     capaSerie = { a: serie("arabica"), n: serie("nyRS") };
   }
