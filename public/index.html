@@ -220,6 +220,9 @@ tr:last-child td{border-bottom:0}
 .cv-down span{display:inline-block;animation:bob 2.2s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 .cover .pill{background:rgba(255,255,255,.07)}
+.cover .pill-nav{background:var(--lima);color:var(--petroleo);border-color:var(--lima);font-weight:800}
+.cover .pill-nav:hover{background:#B9DC5E}
+.cv-track .nw{cursor:pointer}
 .is-tv .cv-down,.is-tv #btn-theme{display:none}
 .is-tv.idle,.is-tv.idle *{cursor:none!important}
 
@@ -317,6 +320,7 @@ footer b{color:var(--fg)}
       <div class="status" aria-live="polite">
         <span class="pill" id="pill-live"><span class="dot" id="dot"></span><span id="live-txt">Carregando…</span></span>
         <span class="pill" id="pill-ny"><span class="dot" id="dot-ny"></span><span id="ny-txt">NY</span></span>
+        <button class="pill pill-nav" type="button" data-aba="noticias">Notícias</button>
         <button class="pill" id="btn-full" type="button" aria-label="Tela cheia">Tela cheia</button>
         <button class="pill" id="btn-theme" type="button" aria-label="Alternar tema claro/escuro">Tema</button>
       </div>
@@ -515,6 +519,28 @@ footer b{color:var(--fg)}
 <script>
 (() => {
   "use strict";
+  // ---------- navegação entre abas (no topo do script: funciona mesmo se algo abaixo falhar) ----------
+  var N = null, filtro = "todos";
+  function abrirAba(qual, push = true) {
+    const not = qual === "noticias";
+    const g = (id) => document.getElementById(id);
+    g("pg-mercado").hidden = not; g("pg-noticias").hidden = !not; g("cover").hidden = not;
+    g("tab-mercado").setAttribute("aria-selected", !not); g("tab-noticias").setAttribute("aria-selected", not);
+    document.querySelectorAll("[data-aba]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.aba === qual));
+    if (push) { try { history.replaceState(null, "", not ? "#noticias" : location.pathname + location.search); } catch (e) {} }
+    window.scrollTo({ top: 0 });
+    try { if (not) { if (!N) carregarNoticias(); } else if (D) desenharGraficos(); } catch (e) {}
+  }
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest("#tab-mercado, #tab-noticias, [data-aba], #lk-noticias, #bar-logo, #cv-down");
+    if (!el) return;
+    e.preventDefault();
+    if (el.id === "tab-noticias" || el.id === "lk-noticias" || el.dataset.aba === "noticias") abrirAba("noticias");
+    else if (el.id === "tab-mercado" || el.dataset.aba === "mercado") abrirAba("mercado");
+    else if (el.id === "bar-logo") { if (document.getElementById("cover").hidden) abrirAba("mercado"); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    else if (el.id === "cv-down") document.getElementById("painel").scrollIntoView({ behavior: "smooth" });
+  });
+  window.addEventListener("hashchange", () => abrirAba(location.hash === "#noticias" ? "noticias" : "mercado", false));
   const LB_SACA = 132.277; // libras por saca de 60 kg
   const $ = (id) => document.getElementById(id);
   const fmt = (v, d = 2) => v == null || !isFinite(v) ? "—" : v.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -897,7 +923,7 @@ footer b{color:var(--fg)}
     if (D?.bcb?.selic) itens.push(`<span>Selic<b>${fmt(D.bcb.selic.valor, 2)}%</b></span>`);
     const news = [];
     for (const t of (N?.temas || [])) if (t.itens[0]) news.push(t.itens[0]);
-    const ns = news.slice(0, 5).map((n) => `<span class="nw"><i>${esc((N.temas.find((t) => t.id === n.tema) || {}).nome || "Notícia")}</i>${esc(n.titulo)}</span>`);
+    const ns = news.slice(0, 5).map((n) => `<span class="nw" data-aba="noticias" role="link" tabindex="0"><i>${esc((N.temas.find((t) => t.id === n.tema) || {}).nome || "Notícia")}</i>${esc(n.titulo)}</span>`);
     const mix = []; itens.forEach((it, i) => { mix.push(it); if (ns.length && i % 4 === 3) mix.push(ns[(i >> 2) % ns.length]); });
     if (!mix.length) return;
     const html = mix.join('<span class="sep">◆</span>');
@@ -907,8 +933,8 @@ footer b{color:var(--fg)}
 
   // Gráfico animado de fundo: CEPEA arábica (linha principal) e NY em reais (linha fina), com brilho percorrendo a curva.
   let capaSerie = { a: [], n: [] };
-  (function fundoAnimado() {
-    const cv = $("cv-bg"), ctx = cv.getContext("2d");
+  (function fundoAnimado() { try {
+    const cv = $("cv-bg"), ctx = cv.getContext("2d"); if (!ctx) return;
     const reduz = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let W = 0, H = 0, dpr = 1, t0 = performance.now(), ultimoQuadro = 0;
     function tam() { dpr = Math.min(2, window.devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
@@ -972,7 +998,7 @@ footer b{color:var(--fg)}
       }
     }
     requestAnimationFrame(quadro);
-  })();
+  } catch (e) { console.warn("animação da capa desativada", e); } })();
 
   // Tela cheia, modo TV (?tv=1): tela sempre acesa, cursor some, página recarrega a cada 6 h.
   $("btn-full").onclick = () => { const d = document; (d.fullscreenElement ? d.exitFullscreen() : d.documentElement.requestFullscreen?.())?.catch?.(() => {}); };
@@ -994,7 +1020,6 @@ footer b{color:var(--fg)}
     sustentabilidade: ["var(--lima)", "var(--lima-soft)", "var(--lima-ink)"],
     internacional: ["var(--c-rob)", "var(--terra-soft)", "var(--terra-ink)"],
   };
-  let N = null, filtro = "todos";
   const quando = (iso) => {
     if (!iso) return "";
     const h = (Date.now() - Date.parse(iso)) / 36e5;
@@ -1042,19 +1067,6 @@ footer b{color:var(--fg)}
       if (!N) $("nt-dest").innerHTML = '<div class="empty">Não foi possível carregar as notícias agora.</div>';
     }
   }
-  function abrirAba(qual, push = true) {
-    const not = qual === "noticias";
-    $("pg-mercado").hidden = not; $("pg-noticias").hidden = !not; $("cover").hidden = not;
-    $("tab-mercado").setAttribute("aria-selected", !not); $("tab-noticias").setAttribute("aria-selected", not);
-    if (push) history.replaceState(null, "", not ? "#noticias" : "#");
-    if (not) { if (!N) carregarNoticias(); } else if (D) desenharGraficos();
-    window.scrollTo({ top: 0 });
-  }
-  $("bar-logo").onclick = (e) => { e.preventDefault(); if ($("cover").hidden) abrirAba("mercado"); window.scrollTo({ top: 0, behavior: "smooth" }); };
-  $("cv-down").onclick = (e) => { e.preventDefault(); $("painel").scrollIntoView({ behavior: "smooth" }); };
-  document.getElementById("lk-noticias")?.addEventListener("click", (e) => { e.preventDefault(); abrirAba("noticias"); });
-  $("tab-mercado").onclick = () => abrirAba("mercado");
-  $("tab-noticias").onclick = () => abrirAba("noticias");
   abrirAba(location.hash === "#noticias" ? "noticias" : "mercado", false);
   carregarNoticias();
   setInterval(carregarNoticias, 30 * 60000);
