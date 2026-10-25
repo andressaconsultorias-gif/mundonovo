@@ -171,6 +171,79 @@ tr:last-child td{border-bottom:0}
 .warn{background:var(--terra-soft);color:var(--terra-ink);border-radius:10px;padding:10px 12px;font-size:13px;margin-top:14px}
 
 
+
+/* ===== Capa (tela cheia, sempre escura — pensada para a TV da recepção) ===== */
+.cover{position:relative;min-height:100vh;min-height:100svh;background:radial-gradient(120% 90% at 78% 8%,#0B4452 0%,#05303A 38%,#021A20 100%);color:#EAF2F3;overflow:hidden;isolation:isolate}
+#cv-bg{position:absolute;inset:0;width:100%;height:100%;z-index:-2;display:block}
+.cv-veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(2,26,32,.55) 0%,rgba(2,26,32,0) 30%,rgba(2,26,32,0) 62%,rgba(2,26,32,.75) 100%);pointer-events:none}
+.cv-inner{min-height:100vh;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto auto;padding:clamp(16px,2.4vw,44px) max(clamp(16px,3vw,56px),env(safe-area-inset-left)) clamp(14px,1.6vw,28px)}
+.cv-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.cv-brand .wordmark{font-size:clamp(18px,1.6vw,30px)}
+.cv-brand .tagline{font-size:clamp(10px,.75vw,13px)}
+.cv-clock{text-align:center;font-family:var(--f-display);line-height:1}
+.cv-time{font-weight:800;font-size:clamp(22px,2.6vw,48px);letter-spacing:.02em}
+.cv-date{font-size:clamp(10px,.8vw,14px);letter-spacing:.14em;text-transform:uppercase;color:#9DB8BE;margin-top:6px;font-weight:700}
+.cv-main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(20px,3vw,64px);align-items:center;padding:clamp(18px,3vh,48px) 0}
+.cv-eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:clamp(11px,.95vw,17px);letter-spacing:.16em;text-transform:uppercase;color:#C9D6D8}
+.live-dot{width:10px;height:10px;border-radius:50%;background:var(--lima);box-shadow:0 0 0 0 rgba(168,207,69,.6);animation:pulse 2s infinite;flex:none}
+.cv-big{font-family:var(--f-display);font-weight:900;font-size:clamp(54px,8.6vw,176px);line-height:.95;letter-spacing:-.03em;margin:clamp(8px,1.2vh,18px) 0 clamp(10px,1.6vh,22px);white-space:nowrap;background:linear-gradient(180deg,#FFFFFF 0%,#DCE9EB 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cv-big small{font-size:.32em;letter-spacing:0;margin-right:.18em;vertical-align:.95em;color:#A8CF45;-webkit-text-fill-color:#A8CF45}
+.cv-sub{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#B9CCD0;font-size:clamp(13px,1.05vw,19px)}
+.cv-sub b{color:#fff}
+.cv-sub2{margin-top:10px;color:#9DB8BE;font-size:clamp(12px,.95vw,17px);display:flex;gap:10px;align-items:baseline}
+.cv-sub2 small{color:#9DB8BE;margin-left:6px}
+.cv-sub2 .chg{font-size:inherit}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-display);font-weight:800;font-size:clamp(14px,1.15vw,21px);padding:.32em .7em;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);white-space:nowrap}
+.chip.up{color:#9BE08F;background:rgba(127,194,122,.14);border-color:rgba(127,194,122,.3)}
+.chip.down{color:#FF9D8F;background:rgba(229,139,125,.14);border-color:rgba(229,139,125,.32)}
+.chip.flat{color:#C9D6D8}
+.chip.sm{font-size:clamp(12px,.85vw,15px)}
+.cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.1vw,20px)}
+.tile{position:relative;overflow:hidden;border-radius:clamp(14px,1.1vw,22px);padding:clamp(14px,1.3vw,26px);background:linear-gradient(160deg,rgba(255,255,255,.085),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.11);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);min-width:0}
+.tile::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:var(--tc);opacity:.9}
+.t-head{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-display);font-weight:700;font-size:clamp(10px,.75vw,14px);letter-spacing:.13em;text-transform:uppercase;color:#9DB8BE}
+.t-val{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,2.9vw,58px);line-height:1.05;margin-top:clamp(6px,.8vh,12px);white-space:nowrap;color:#fff}
+.t-val small{font-size:.42em;color:#9DB8BE;margin:0 .18em 0 4px;font-weight:700}
+.t-foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;color:#9DB8BE;font-size:clamp(12px,.85vw,15px)}
+.spark{display:block;width:100%;height:clamp(28px,4vh,52px);margin-top:clamp(8px,1vh,14px);overflow:visible}
+.spark .ln{fill:none;stroke:var(--tc);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+.spark .ar{fill:var(--tc);opacity:.13}
+.spark .pt{fill:var(--tc)}
+.cv-ticker{position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);padding:clamp(9px,1.1vh,16px) 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.cv-track{display:inline-flex;gap:clamp(28px,2.6vw,52px);white-space:nowrap;animation:tick var(--dur,90s) linear infinite;will-change:transform;font-size:clamp(13px,1vw,19px);color:#C9D6D8}
+.cv-track span b{color:#fff;font-family:var(--f-display);font-weight:800;margin:0 6px}
+.cv-track .up{color:#9BE08F}.cv-track .down{color:#FF9D8F}
+.cv-track .sep{color:#A8CF45}
+.cv-track .nw{color:#EAF2F3}
+.cv-track .nw i{font-style:normal;color:#E58B7D;font-family:var(--f-display);font-weight:800;font-size:.8em;letter-spacing:.12em;margin-right:8px}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.cv-down{justify-self:center;margin-top:clamp(10px,1.4vh,20px);color:#9DB8BE;text-decoration:none;font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.cv-down span{display:inline-block;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+.cover .pill{background:rgba(255,255,255,.07)}
+.is-tv .cv-down,.is-tv #btn-theme{display:none}
+.is-tv.idle,.is-tv.idle *{cursor:none!important}
+
+/* Barra fixa abaixo da capa */
+header.top{position:sticky;top:0;z-index:20;background:var(--petroleo);box-shadow:0 1px 0 rgba(255,255,255,.06),0 6px 18px rgba(0,0,0,.12)}
+header.top::after{display:none}
+.top .wrap.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:0;padding-bottom:0}
+.bar-brand{font-family:var(--f-display);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#C9D6D8;white-space:nowrap}
+.bar-brand b{color:#fff;font-weight:900}
+.top .maintabs{margin-top:0;border-bottom:0}
+
+@media (max-width:900px){
+  .cv-main{grid-template-columns:1fr}
+  .cv-clock{display:none}
+  .cv-big{font-size:clamp(50px,15vw,96px)}
+}
+@media (max-width:600px){
+  .cv-top .status{width:100%}
+  #btn-full{display:none}
+  .t-val{font-size:clamp(22px,7vw,30px)}
+  .bar-brand{display:none}
+}
+
 /* Abas principais */
 .maintabs{display:flex;gap:4px;margin-top:20px;border-bottom:1px solid rgba(255,255,255,.14)}
 .maintabs button{border:0;background:transparent;color:#C9D6D8;font:800 13px var(--f-display);letter-spacing:.12em;text-transform:uppercase;padding:12px 14px 13px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
@@ -230,21 +303,74 @@ footer b{color:var(--fg)}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap withtabs">
-    <div class="brandrow">
-      <div>
+<section class="cover" id="cover" aria-label="Capa do painel de mercado">
+  <canvas id="cv-bg" aria-hidden="true"></canvas>
+  <div class="cv-veil" aria-hidden="true"></div>
+  <div class="cv-inner">
+    <div class="cv-top">
+      <div class="cv-brand">
         <div class="wordmark">MUNDO NOVO CAFÉ</div>
         <div class="tagline">CAFÉ <b>+</b> MERCADO E SUSTENTABILIDADE</div>
+      </div>
+      <div class="cv-clock">
+        <div class="cv-time" id="cv-time">--:--</div>
+        <div class="cv-date" id="cv-date"></div>
       </div>
       <div class="status" aria-live="polite">
         <span class="pill" id="pill-live"><span class="dot" id="dot"></span><span id="live-txt">Carregando…</span></span>
         <span class="pill" id="pill-ny"><span class="dot" id="dot-ny"></span><span id="ny-txt">NY</span></span>
+        <button class="pill" id="btn-full" type="button" aria-label="Tela cheia">Tela cheia</button>
         <button class="pill" id="btn-theme" type="button" aria-label="Alternar tema claro/escuro">Tema</button>
       </div>
     </div>
-    <h1 class="hero-title">Painel de <em>mercado</em> do café</h1>
-    <p class="hero-sub">Indicador CEPEA, preço por praça, bolsas de Nova York, Londres e B3, dólar, posição dos fundos e clima nas regiões onde a Mundo Novo atua. Atualiza sozinho a cada minuto.</p>
+
+    <div class="cv-main">
+      <div class="cv-hero">
+        <div class="cv-eyebrow"><span class="live-dot"></span>Arábica · Indicador CEPEA/Esalq</div>
+        <div class="cv-big" id="k-arab"><span class="skel"></span></div>
+        <div class="cv-sub">
+          <span class="chip" id="k-arab-c"></span>
+          <span>por saca de 60 kg · tipo 6 · fechamento <b id="k-arab-d">—</b></span>
+        </div>
+        <div class="cv-sub2"><span>30 dias</span> <span id="k-arab-30">—</span></div>
+      </div>
+
+      <div class="cv-grid">
+        <article class="tile" style="--tc:#9CC5CF">
+          <div class="t-head"><span>Nova York · ICE</span><span id="k-ny-m"></span></div>
+          <div class="t-val" id="k-ny"><span class="skel"></span></div>
+          <div class="t-foot"><span class="chip sm" id="k-ny-c"></span><span id="k-ny-rs"></span></div>
+          <svg class="spark" id="sp-ny" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </article>
+        <article class="tile" style="--tc:#A8CF45">
+          <div class="t-head"><span>Dólar comercial</span><span id="k-usd-h"></span></div>
+          <div class="t-val" id="k-usd"><span class="skel"></span></div>
+          <div class="t-foot"><span class="chip sm" id="k-usd-c"></span><span id="k-usd-p"></span></div>
+          <svg class="spark" id="sp-usd" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </article>
+        <article class="tile" style="--tc:#E3B062">
+          <div class="t-head"><span>Conilon · CEPEA</span><span id="k-rob-d"></span></div>
+          <div class="t-val" id="k-rob"><span class="skel"></span></div>
+          <div class="t-foot"><span class="chip sm" id="k-rob-c"></span><span>R$/saca · ES</span></div>
+          <svg class="spark" id="sp-rob" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </article>
+        <article class="tile" style="--tc:#E58B7D">
+          <div class="t-head"><span>Patrocínio · tipo 6</span><span id="k-pat-d"></span></div>
+          <div class="t-val" id="k-pat"><span class="skel"></span></div>
+          <div class="t-foot"><span class="chip sm" id="k-pat-c"></span><span id="k-pat-s">Expocaccer</span></div>
+          <svg class="spark" id="sp-pat" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </article>
+      </div>
+    </div>
+
+    <div class="cv-ticker" aria-label="Cotações e manchetes"><div class="cv-track" id="cv-track"></div></div>
+    <a class="cv-down" href="#painel" id="cv-down">Todos os indicadores <span aria-hidden="true">↓</span></a>
+  </div>
+</section>
+
+<header class="top" id="painel">
+  <div class="wrap bar">
+    <div class="bar-brand"><b>MUNDO NOVO</b> · Mercado do café</div>
     <nav class="maintabs" role="tablist" aria-label="Seções do painel">
       <button type="button" role="tab" id="tab-mercado" aria-controls="pg-mercado" aria-selected="true">Mercado</button>
       <button type="button" role="tab" id="tab-noticias" aria-controls="pg-noticias" aria-selected="false">Notícias<span class="n" id="n-count" hidden></span></button>
@@ -253,28 +379,6 @@ footer b{color:var(--fg)}
 </header>
 
 <main class="wrap" id="pg-mercado" role="tabpanel" aria-labelledby="tab-mercado">
-  <section class="kpis" aria-label="Principais cotações">
-    <article class="kpi" style="--accent:var(--terra)">
-      <div class="eyebrow"><span>Arábica · CEPEA</span><span id="k-arab-d"></span></div>
-      <div class="v" id="k-arab"><span class="skel"></span></div>
-      <div class="sub"><span class="chg" id="k-arab-c"></span> <span>R$/saca · tipo 6, SP</span></div>
-    </article>
-    <article class="kpi" style="--accent:var(--petroleo-2)">
-      <div class="eyebrow"><span>Nova York · ICE</span><span id="k-ny-m"></span></div>
-      <div class="v" id="k-ny"><span class="skel"></span></div>
-      <div class="sub"><span class="chg" id="k-ny-c"></span> <span id="k-ny-rs"></span></div>
-    </article>
-    <article class="kpi" style="--accent:var(--lima)">
-      <div class="eyebrow"><span>Dólar comercial</span><span id="k-usd-h"></span></div>
-      <div class="v" id="k-usd"><span class="skel"></span></div>
-      <div class="sub"><span class="chg" id="k-usd-c"></span> <span id="k-usd-p"></span></div>
-    </article>
-    <article class="kpi" style="--accent:var(--c-rob)">
-      <div class="eyebrow"><span>Conilon · CEPEA</span><span id="k-rob-d"></span></div>
-      <div class="v" id="k-rob"><span class="skel"></span></div>
-      <div class="sub"><span class="chg" id="k-rob-c"></span> <span>R$/saca · tipo 6, ES</span></div>
-    </article>
-  </section>
 
   <div id="aviso" class="warn" hidden></div>
 
@@ -474,15 +578,15 @@ footer b{color:var(--fg)}
       el.textContent = txt; ultimo[id] = txt;
     }
   }
-  function setChg(id, v) { const el = $(id); el.className = "chg " + cls(v); el.textContent = v == null ? "" : arrow(v) + pct(v); }
+  function setChg(id, v) { const el = $(id); if (!el) return; if (el.dataset.base == null) el.dataset.base = el.className.includes("chip") ? el.className : "chg"; el.className = el.dataset.base + " " + cls(v); el.textContent = v == null ? "" : arrow(v) + pct(v); }
 
   // ---------- render ----------
   function render() {
     const c = D.cotacoes || {}, x = derivados();
 
     // KPIs
-    setText("k-arab", brl(x.arab)); setChg("k-arab-c", c.cepeaArabica?.var); $("k-arab-d").textContent = dBR(c.cepeaArabica?.data);
-    setText("k-rob", brl(x.rob)); setChg("k-rob-c", c.cepeaRobusta?.var); $("k-rob-d").textContent = dBR(c.cepeaRobusta?.data);
+    if (x.arab) $("k-arab").innerHTML = "<small>R$</small>" + esc(fmt(x.arab)); setChg("k-arab-c", c.cepeaArabica?.var); $("k-arab-d").textContent = dBR(c.cepeaArabica?.data);
+    if (x.rob) $("k-rob").innerHTML = "<small>R$</small>" + esc(fmt(x.rob)); setChg("k-rob-c", c.cepeaRobusta?.var); $("k-rob-d").textContent = dBR(c.cepeaRobusta?.data);
     if (x.nyCents) {
       $("k-ny").innerHTML = esc(fmt(x.nyCents)) + "<small>¢/lb</small>";
       const v = x.nyLive ? c.aoVivo.nyCafe.var : (x.ny0?.var != null && x.ny0.preco ? x.ny0.var / (x.ny0.preco - x.ny0.var) * 100 : null);
@@ -491,12 +595,13 @@ footer b{color:var(--fg)}
       $("k-ny-m").textContent = x.nyLive ? (c.aoVivo.nyCafe.contrato || "").replace(/Caf[ée]\s*/i, "") : (x.ny0?.mes || "");
     }
     if (x.usd) {
-      $("k-usd").innerHTML = esc(fmt(x.usd, 3).replace(/^/, "R$ "));
+      $("k-usd").innerHTML = "<small>R$</small>" + esc(fmt(x.usd, 3));
       setChg("k-usd-c", D.dolar?.usd?.var ?? null);
       const pt = D.bcb?.ptax?.at(-1);
       $("k-usd-p").textContent = pt ? "PTAX " + fmt(pt.valor, 4) : "";
       const h = D.dolar?.usd?.hora; $("k-usd-h").textContent = h ? h.slice(11, 16) : "";
     }
+    capa(x);
 
     // Leitura do dia
     leitura(x);
@@ -748,6 +853,141 @@ footer b{color:var(--fg)}
     }
   }
 
+
+  // ---------- capa ----------
+  const BR = "America/Sao_Paulo";
+  function relogioCapa() {
+    const d = new Date();
+    $("cv-time").textContent = d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", timeZone: BR });
+    $("cv-date").textContent = d.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", timeZone: BR }) + " · Brasília";
+  }
+  relogioCapa(); setInterval(relogioCapa, 10000);
+
+  function spark(id, pts) {
+    const el = $(id); if (!el) return;
+    const v = pts.slice(-40).map((p) => p.v);
+    if (v.length < 2) { el.innerHTML = ""; return; }
+    const mn = Math.min(...v), mx = Math.max(...v), r = mx - mn || 1;
+    const xy = v.map((y, i) => [i / (v.length - 1) * 200, 40 - (y - mn) / r * 36]);
+    const d = xy.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+    const last = xy.at(-1);
+    el.innerHTML = `<path class="ar" d="${d} L200 44 L0 44 Z"/><path class="ln" d="${d}"/><circle class="pt" cx="${last[0]}" cy="${last[1]}" r="3.2"/>`;
+  }
+
+  function capa(x) {
+    const c = D.cotacoes || {};
+    $("k-arab-30").innerHTML = varPeriodo("arabica", 30);
+    const pat = (c.fisico?.tipo6 || []).find((p) => /Patroc/i.test(p.local));
+    if (pat) {
+      $("k-pat").innerHTML = "<small>R$</small>" + esc(fmt(pat.preco, 0));
+      setChg("k-pat-c", pat.var);
+      $("k-pat-d").textContent = dBR(c.fisico?.data);
+      $("k-pat-s").textContent = x.arab ? `${pat.preco >= x.arab ? "+" : "−"}${brl(Math.abs(pat.preco - x.arab), 0)} vs CEPEA` : "Expocaccer";
+    }
+    spark("sp-ny", serie("nyCents")); spark("sp-usd", serie("ptax")); spark("sp-rob", serie("robusta")); spark("sp-pat", serie("patrocinio").length > 1 ? serie("patrocinio") : serie("arabica"));
+    ticker();
+    capaSerie = { a: serie("arabica"), n: serie("nyRS") };
+  }
+
+  function ticker() {
+    const c = D?.cotacoes || {}, itens = [];
+    const ch = (v, suf = "%") => v == null ? "" : `<em class="${cls(v)}">${arrow(v)}${fmt(Math.abs(v), 2)}${suf}</em>`;
+    for (const p of (c.fisico?.tipo6 || [])) itens.push(`<span>${esc(p.local.replace(/\s*\(.*\)/, "").replace("/MG", "").replace("/SP", ""))}<b>${brl(p.preco, 0)}</b>${ch(p.var)}</span>`);
+    for (const k of (c.ny?.contratos || []).slice(0, 3)) itens.push(`<span>NY ${esc(k.mes)}<b>${fmt(k.preco)} ¢/lb</b>${ch(k.var, " pts")}</span>`);
+    for (const k of (c.londres?.contratos || []).slice(0, 2)) itens.push(`<span>Londres ${esc(k.mes)}<b>US$ ${fmt(k.preco, 0)}/t</b>${ch(k.var, " pts")}</span>`);
+    for (const k of (c.b3?.contratos || []).slice(0, 2)) itens.push(`<span>B3 ${esc(k.mes)}<b>US$ ${fmt(k.preco)}/sc</b>${ch(k.var)}</span>`);
+    if (D?.bcb?.selic) itens.push(`<span>Selic<b>${fmt(D.bcb.selic.valor, 2)}%</b></span>`);
+    const news = [];
+    for (const t of (N?.temas || [])) if (t.itens[0]) news.push(t.itens[0]);
+    const ns = news.slice(0, 5).map((n) => `<span class="nw"><i>${esc((N.temas.find((t) => t.id === n.tema) || {}).nome || "Notícia")}</i>${esc(n.titulo)}</span>`);
+    const mix = []; itens.forEach((it, i) => { mix.push(it); if (ns.length && i % 4 === 3) mix.push(ns[(i >> 2) % ns.length]); });
+    if (!mix.length) return;
+    const html = mix.join('<span class="sep">◆</span>');
+    const tr = $("cv-track");
+    if (tr.dataset.html !== html) { tr.dataset.html = html; tr.innerHTML = html + '<span class="sep">◆</span>' + html + '<span class="sep">◆</span>'; tr.style.setProperty("--dur", Math.max(60, mix.length * 6) + "s"); }
+  }
+
+  // Gráfico animado de fundo: CEPEA arábica (linha principal) e NY em reais (linha fina), com brilho percorrendo a curva.
+  let capaSerie = { a: [], n: [] };
+  (function fundoAnimado() {
+    const cv = $("cv-bg"), ctx = cv.getContext("2d");
+    const reduz = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let W = 0, H = 0, dpr = 1, t0 = performance.now(), ultimoQuadro = 0;
+    function tam() { dpr = Math.min(2, window.devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    tam(); addEventListener("resize", tam);
+    const suave = (pts) => { // curva suave por pontos médios
+      ctx.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i < pts.length - 1; i++) { const mx = (pts[i][0] + pts[i + 1][0]) / 2, my = (pts[i][1] + pts[i + 1][1]) / 2; ctx.quadraticCurveTo(pts[i][0], pts[i][1], mx, my); }
+      ctx.lineTo(pts.at(-1)[0], pts.at(-1)[1]);
+    };
+    function quadro(now) {
+      requestAnimationFrame(quadro);
+      if (document.hidden || now - ultimoQuadro < 33) return; // ~30 fps, leve para a TV
+      ultimoQuadro = now;
+      const t = (now - t0) / 1000;
+      ctx.clearRect(0, 0, W, H);
+      // grade sutil
+      ctx.strokeStyle = "rgba(255,255,255,0.045)"; ctx.lineWidth = 1;
+      const passo = Math.max(60, W / 18);
+      for (let x = (-(t * 6) % passo); x < W; x += passo) { ctx.beginPath(); ctx.moveTo(x, H * 0.38); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = H * 0.42; y < H; y += passo * 0.75) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+      // ondas de fundo (movimento contínuo mesmo sem dados novos)
+      for (let k = 0; k < 3; k++) {
+        ctx.beginPath();
+        for (let x = 0; x <= W; x += 12) {
+          const y = H * (0.7 + k * 0.07) + Math.sin(x / (W / (2.2 + k)) + t * (0.25 + k * 0.08) + k) * H * 0.035;
+          x ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(168,207,69,${0.06 - k * 0.015})`; ctx.lineWidth = 2; ctx.stroke();
+      }
+      const a = capaSerie.a.slice(-90);
+      if (a.length > 2) {
+        const n = capaSerie.n.filter((p) => p.d >= a[0].d);
+        const todos = a.map((p) => p.v);
+        const mn = Math.min(...todos), mx = Math.max(...todos), r = mx - mn || 1;
+        const top = H * 0.6, base = H * 0.84, x0 = W * 0.02, x1 = W * 0.98;
+        const d0 = Date.parse(a[0].d), d1 = Date.parse(a.at(-1).d), span = d1 - d0 || 1;
+        const map = (p) => [x0 + (Date.parse(p.d) - d0) / span * (x1 - x0), base - (p.v - mn) / r * (base - top)];
+        const prog = reduz ? 1 : Math.min(1, t / 2.8);
+        const ease = 1 - Math.pow(1 - prog, 3);
+        const pa = a.map(map), cut = Math.max(2, Math.ceil(pa.length * ease));
+        const vis = pa.slice(0, cut);
+        // área + linha CEPEA
+        const g = ctx.createLinearGradient(0, top, 0, H);
+        g.addColorStop(0, "rgba(229,139,125,0.30)"); g.addColorStop(1, "rgba(229,139,125,0)");
+        ctx.beginPath(); suave(vis); ctx.lineTo(vis.at(-1)[0], H); ctx.lineTo(vis[0][0], H); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+        ctx.beginPath(); suave(vis); ctx.strokeStyle = "rgba(240,167,155,0.95)"; ctx.lineWidth = 3; ctx.shadowColor = "rgba(229,139,125,0.6)"; ctx.shadowBlur = 14; ctx.stroke(); ctx.shadowBlur = 0;
+        // brilho que percorre a curva
+        if (prog >= 1 && !reduz) {
+          const f = (t * 0.09) % 1, i = Math.floor(f * (pa.length - 1)), j = Math.min(pa.length - 1, i + 1), u = f * (pa.length - 1) - i;
+          const px = pa[i][0] + (pa[j][0] - pa[i][0]) * u, py = pa[i][1] + (pa[j][1] - pa[i][1]) * u;
+          const rg = ctx.createRadialGradient(px, py, 0, px, py, 26); rg.addColorStop(0, "rgba(255,255,255,0.55)"); rg.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(px, py, 26, 0, 7); ctx.fill();
+        }
+        // ponto atual pulsando + rótulo
+        const lp = vis.at(-1), pulso = (Math.sin(t * 2.4) + 1) / 2;
+        ctx.beginPath(); ctx.arc(lp[0], lp[1], 7 + pulso * 10, 0, 7); ctx.fillStyle = `rgba(168,207,69,${0.25 - pulso * 0.2})`; ctx.fill();
+        ctx.beginPath(); ctx.arc(lp[0], lp[1], 5.5, 0, 7); ctx.fillStyle = "#A8CF45"; ctx.fill();
+        // datas nas pontas
+        ctx.fillStyle = "rgba(201,214,216,0.55)"; ctx.font = `600 ${Math.max(11, W / 140)}px "Public Sans", Arial`;
+        ctx.textAlign = "right"; ctx.fillText(`CEPEA arábica · ${dBR(a[0].d)} a ${dBR(a.at(-1).d)} · máx. ${brl(mx, 0)} · mín. ${brl(mn, 0)}`, x1, base + 22);
+      }
+    }
+    requestAnimationFrame(quadro);
+  })();
+
+  // Tela cheia, modo TV (?tv=1): tela sempre acesa, cursor some, página recarrega a cada 6 h.
+  $("btn-full").onclick = () => { const d = document; (d.fullscreenElement ? d.exitFullscreen() : d.documentElement.requestFullscreen?.())?.catch?.(() => {}); };
+  const TV = new URLSearchParams(location.search).has("tv");
+  if (TV) {
+    document.documentElement.classList.add("is-tv");
+    let tm; const acorda = () => { document.documentElement.classList.remove("idle"); clearTimeout(tm); tm = setTimeout(() => { document.documentElement.classList.add("idle"); window.scrollTo({ top: 0, behavior: "smooth" }); }, 60000); };
+    ["mousemove", "keydown", "touchstart", "scroll"].forEach((e) => addEventListener(e, acorda, { passive: true })); acorda();
+    const lock = async () => { try { await navigator.wakeLock?.request("screen"); } catch (e) {} };
+    lock(); document.addEventListener("visibilitychange", () => { if (!document.hidden) lock(); });
+    setTimeout(() => location.reload(), 6 * 3600e3);
+  }
+
   // ---------- aba Notícias ----------
   const TEMA_COR = {
     mercado: ["var(--terra)", "var(--terra-soft)", "var(--terra-ink)"],
@@ -799,19 +1039,20 @@ footer b{color:var(--fg)}
       const r = await fetch("/api/noticias", { cache: "no-store" });
       const j = await r.json();
       if (!r.ok || j.erro) throw new Error(j.erro);
-      N = j; renderNoticias();
+      N = j; renderNoticias(); if (D) ticker();
     } catch (e) {
       if (!N) $("nt-dest").innerHTML = '<div class="empty">Não foi possível carregar as notícias agora.</div>';
     }
   }
   function abrirAba(qual, push = true) {
     const not = qual === "noticias";
-    $("pg-mercado").hidden = not; $("pg-noticias").hidden = !not;
+    $("pg-mercado").hidden = not; $("pg-noticias").hidden = !not; $("cover").hidden = not;
     $("tab-mercado").setAttribute("aria-selected", !not); $("tab-noticias").setAttribute("aria-selected", not);
     if (push) history.replaceState(null, "", not ? "#noticias" : "#");
     if (not) { if (!N) carregarNoticias(); } else if (D) desenharGraficos();
     window.scrollTo({ top: 0 });
   }
+  $("cv-down").onclick = (e) => { e.preventDefault(); $("painel").scrollIntoView({ behavior: "smooth" }); };
   document.getElementById("lk-noticias")?.addEventListener("click", (e) => { e.preventDefault(); abrirAba("noticias"); });
   $("tab-mercado").onclick = () => abrirAba("mercado");
   $("tab-noticias").onclick = () => abrirAba("noticias");
