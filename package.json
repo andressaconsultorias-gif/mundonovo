@@ -1,0 +1,13 @@
+{
+  "name": "mundonovo-mercado",
+  "private": true,
+  "type": "module",
+  "description": "Painel de mercado de café da Mundo Novo Café — cotações, praças, bolsas, câmbio, clima e posição dos fundos.",
+  "scripts": {
+    "test": "node --experimental-strip-types test/parse.test.mts"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.6",
+    "@netlify/functions": "^6.0.3"
+  }
+}
