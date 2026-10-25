@@ -7,12 +7,17 @@ import { decode } from "./parse.mts";
 // Guardamos só título, veículo, data e link; o texto fica no site de origem.
 
 export const TEMAS = [
-  { id: "mercado", nome: "Mercado e preços", q: 'café (arábica OR conilon OR robusta) (preço OR cotação OR bolsa OR "Nova York")' },
-  { id: "safra", nome: "Safra e clima", q: "café (safra OR florada OR colheita OR Conab OR chuva OR geada OR \"El Niño\")" },
-  { id: "exportacao", nome: "Exportação e demanda", q: "café (exportação OR exportações OR Cecafé OR embarques OR torrefação OR consumo)" },
-  { id: "sustentabilidade", nome: "Sustentabilidade e certificação", q: "café (EUDR OR desmatamento OR \"Rainforest Alliance\" OR certificação OR rastreabilidade OR regenerativo)" },
-  { id: "internacional", nome: "Internacional", q: "café (Vietnã OR Colômbia OR ICE OR \"OIC\" OR tarifa OR \"Estados Unidos\" OR Europa) mercado" },
+  { id: "mercado", nome: "Mercado e preços", q: '"café arábica" OR "café conilon" OR "preço do café" OR "cotação do café" OR "mercado de café" OR "café robusta"' },
+  { id: "safra", nome: "Safra e clima", q: '"safra de café" OR "florada do café" OR "colheita de café" OR cafeicultura OR cafeicultores OR "lavouras de café"' },
+  { id: "exportacao", nome: "Exportação e demanda", q: '"exportações de café" OR "exportação de café" OR Cecafé OR "consumo de café" OR Abic OR "embarques de café"' },
+  { id: "sustentabilidade", nome: "Sustentabilidade e certificação", q: '(café OR cafeicultura) (EUDR OR "Rainforest Alliance" OR certificação OR rastreabilidade OR regenerativo OR sustentável OR desmatamento)' },
+  { id: "internacional", nome: "Internacional", q: 'café (Vietnã OR Colômbia OR Etiópia OR Honduras OR Indonésia OR OIC OR "bolsa de Nova York" OR Londres) (safra OR produção OR exportação OR preços)' },
 ] as const;
+
+// A manchete precisa falar de café como mercado/cultura; descarta assuntos de consumo e gastronomia.
+const RELEVANTE = /caf[ée]|cafeic|cafeeir|conilon|robusta|ar[áa]bica|EUDR|Cec[aá]f[ée]/i;
+const RUIDO = /caf[ée] da manh[ãa]|cafeteria|barista|receita|bolo|caf[ée] com leite|cafezinho|xícara|torrefação artesanal|"oscar"|caf[ée] da tarde|happy hour|horóscopo/i;
+export const relevante = (titulo: string) => RELEVANTE.test(titulo) && !RUIDO.test(titulo);
 
 export type Noticia = { titulo: string; veiculo: string | null; url: string; data: string | null; tema: string };
 
@@ -57,7 +62,7 @@ export async function coletarNoticias() {
     const id = TEMAS[i].id;
     if (r.status !== "fulfilled") { erros.push(id); return; }
     porTema[id] = r.value
-      .filter((n) => !n.data || Date.parse(n.data) >= limite)
+      .filter((n) => (!n.data || Date.parse(n.data) >= limite) && relevante(n.titulo))
       .sort((a, b) => (b.data ?? "").localeCompare(a.data ?? ""))
       .filter((n) => { const k = chave(n.titulo); if (vistos.has(k)) return false; vistos.add(k); return true; })
       .slice(0, 12);
@@ -70,9 +75,10 @@ export async function coletarNoticias() {
     const velho = anterior.temas.find((t: any) => t.id === id);
     if (velho) porTema[id] = velho.itens;
   }
-  if (!Object.values(porTema).some((l) => l?.length) && anterior) return anterior;
+  if (!Object.values(porTema).some((l) => l?.length) && anterior?.temas?.some((t: any) => t.itens.length)) return anterior;
 
   const dados = {
+    versao: 2,
     atualizadoEm: new Date().toISOString(),
     temas: TEMAS.map((t) => ({ id: t.id, nome: t.nome, itens: porTema[t.id] ?? [] })),
     falhas: erros,
@@ -85,6 +91,6 @@ export async function coletarNoticias() {
 export async function lerNoticias() {
   const store = getStore({ name: "mercado", consistency: "strong" });
   const n: any = await store.get("noticias", { type: "json" });
-  if (n && Date.now() - Date.parse(n.atualizadoEm) < 30 * 3600e3) return n;
+  if (n && n.versao === 2 && Date.now() - Date.parse(n.atualizadoEm) < 30 * 3600e3) return n;
   try { return await coletarNoticias(); } catch { return n ?? null; }
 }
